@@ -1,10 +1,20 @@
 return { -- Autocompletion
   'saghen/blink.cmp',
   -- optional: provides snippets for the snippet source
-  dependencies = { 'rafamadriz/friendly-snippets' },
+  dependencies = {
+    'folke/lazydev.nvim',
+    'rafamadriz/friendly-snippets',
+    -- add blink.compat to dependencies
+    {
+      "saghen/blink.compat",
+      optional = true, -- make optional so it's only enabled if any extras need it
+      opts = {},
+      version = "*",
+    },
+  },
 
   -- use a release tag to download pre-built binaries
-  version = '1.*',
+  version = '*',
   -- AND/OR build from source
   -- build = 'cargo build --release',
   -- If you use nix, you can build from source with:
@@ -42,6 +52,7 @@ return { -- Autocompletion
         -- By default, you may press `<c-space>` to show the documentation.
         -- Optionally, set `auto_show = true` to show the documentation after a delay.
         documentation = { auto_show = true, auto_show_delay_ms = 200 },
+        ghost_text = { enabled = vim.g.ai_cmp },
     },
 
     -- Default list of enabled providers defined so that you can extend it
@@ -51,6 +62,16 @@ return { -- Autocompletion
       -- with blink.compat
       compat = {},
       default = { 'lsp', 'path', 'snippets', 'buffer' },
+      per_filetype = {
+        lua = { inherit_defaults = true, "lazydev" },
+      },
+      providers = {
+        lazydev = {
+          name = "LazyDev",
+          module = "lazydev.integrations.blink",
+          score_offset = 100, -- show at a higher priority than lsp
+        },
+      },
     },
 
     -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
