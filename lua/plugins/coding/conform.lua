@@ -1,0 +1,2 @@
+--stevearc/conform.nvim
+return {}

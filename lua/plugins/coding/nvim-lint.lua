@@ -1,0 +1,2 @@
+--mfussenegger/nvim-lint
+return {}

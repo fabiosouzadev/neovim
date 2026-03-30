@@ -23,9 +23,7 @@ require('lazy').setup({
     { import = 'plugins.coding' },
     { import = 'plugins.editor' },
     -- { import = 'plugins.lsp' },
-    -- { import = 'plugins.formatting' },
-    -- { import = 'plugins.linting' },
-    -- { import = 'plugins.dap' },
+    { import = 'plugins.dap' },
     -- { import = 'plugins.ai' },
   },
   rocks = {

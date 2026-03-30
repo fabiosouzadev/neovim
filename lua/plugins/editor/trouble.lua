@@ -1,0 +1,2 @@
+-- folke/trouble.nvim
+return {}

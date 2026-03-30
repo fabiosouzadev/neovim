@@ -1,0 +1,2 @@
+-- "folke/flash.nvim",
+return {}
