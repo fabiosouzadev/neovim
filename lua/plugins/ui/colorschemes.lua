@@ -2,6 +2,7 @@ return {
   -- tokyonight
   {
     "folke/tokyonight.nvim",
+    lazy = true,
     opts = { style = "moon" },
   },
     -- catppuccin
@@ -51,10 +52,14 @@ return {
     -- rose-pine
   { 
     "rose-pine/neovim",
+    priority = 1000,
     name = "rose-pine",
     opts = {
       variant = "auto", -- auto, main, moon, or dawn
       dark_variant = "main", -- main, moon, or dawn
-    }
+    },
+    config = function()
+      vim.cmd.colorscheme 'rose-pine'
+    end,
   }
 }

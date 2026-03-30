@@ -21,6 +21,7 @@ return { -- Autocompletion
     -- 'none' for no mappings
     --
     -- All presets have the following mappings:
+    -- <tab>/<s-tab>: move to right/left of your snippet expansion
     -- C-space: Open menu or open docs if already open
     -- C-n/C-p or Up/Down: Select next/previous item
     -- C-e: Hide menu
@@ -36,11 +37,19 @@ return { -- Autocompletion
     },
 
     -- (Default) Only show the documentation popup when manually triggered
-    completion = { documentation = { auto_show = false } },
+    --completion = { documentation = { auto_show = false } },
+    completion = {
+        -- By default, you may press `<c-space>` to show the documentation.
+        -- Optionally, set `auto_show = true` to show the documentation after a delay.
+        documentation = { auto_show = true, auto_show_delay_ms = 200 },
+    },
 
     -- Default list of enabled providers defined so that you can extend it
     -- elsewhere in your config, without redefining it, due to `opts_extend`
     sources = {
+      -- adding any nvim-cmp sources here will enable them
+      -- with blink.compat
+      compat = {},
       default = { 'lsp', 'path', 'snippets', 'buffer' },
     },
 
@@ -49,8 +58,15 @@ return { -- Autocompletion
     -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
     --
     -- See the fuzzy documentation for more information
-    fuzzy = { implementation = "prefer_rust_with_warning" }
+    fuzzy = { implementation = "prefer_rust_with_warning" },
+
+    -- Shows a signature help window while you type arguments for a function
+    signature = { enabled = true }
   },
-  opts_extend = { "sources.default" }
+  opts_extend = {
+    "sources.completion.enabled_providers",
+    "sources.compat",
+    "sources.default",
+  }
 }
 -- vim: ts=2 sts=2 sw=2 et
