@@ -63,8 +63,8 @@ return {
       map('n', '<leader>ghu', gitsigns.stage_hunk, { desc = 'git [u]ndo stage hunk' })
       map('n', '<leader>ghR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
       map('n', '<leader>ghp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
-      map('n', '<leader>ghb', function() gs.blame_line({ full = true }) end, { desc = 'git [b]lame line' })
-      map('n', '<leader>ghB', function() gs.blame() end, { desc = 'git [b]lame buffer' })
+      map('n', '<leader>ghb', function() gitsigns.blame_line({ full = true }) end, { desc = 'git [b]lame line' })
+      map('n', '<leader>ghB', function() gitsigns.blame() end, { desc = 'git [b]lame buffer' })
       map('n', '<leader>ghd', gitsigns.diffthis, { desc = 'git [d]iff against index' })
       map('n', '<leader>ghD', function() gitsigns.diffthis '@' end, { desc = 'git [D]iff against last commit' })
       
