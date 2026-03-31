@@ -60,8 +60,8 @@ return { -- Autocompletion
     sources = {
       -- adding any nvim-cmp sources here will enable them
       -- with blink.compat
-      compat = {},
-      default = { 'lsp', 'path', 'snippets', 'buffer' },
+      -- compat = {},
+      default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
       per_filetype = {
         lua = { inherit_defaults = true, "lazydev" },
       },

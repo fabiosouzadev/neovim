@@ -24,7 +24,7 @@ require('lazy').setup({
     { import = 'plugins.editor' },
     -- { import = 'plugins.lsp' },
     { import = 'plugins.dap' },
-    { import = 'plugins.ai' },
+    -- { import = 'plugins.ai' },
   },
   rocks = {
     enabled = false,

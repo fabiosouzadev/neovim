@@ -72,20 +72,6 @@ return {
       map('n', '<leader>gtb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line' })
       map('n', '<leader>gtD', gitsigns.preview_hunk_inline, { desc = '[T]oggle git show [D]eleted' })
     end,
-  },
-  {
-    "gitsigns.nvim",
-    opts = function()
-      Snacks.toggle({
-        name = "Git Signs",
-        get = function()
-          return require("gitsigns.config").config.signcolumn
-        end,
-        set = function(state)
-          require("gitsigns").toggle_signs(state)
-        end,
-      }):map("<leader>uG")
-    end,
-  },
+  }
 }
 
