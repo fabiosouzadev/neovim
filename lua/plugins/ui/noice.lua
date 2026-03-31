@@ -1,2 +1,0 @@
--- folke/noice.nvim
-return {}
