@@ -1,115 +1,24 @@
 -- folke/snacks.nvim
-return {}
-
---   {
---     "snacks.nvim",
---     opts = {
---       indent = { enabled = true },
---       input = { enabled = true },
---       notifier = { enabled = true },
---       scope = { enabled = true },
---       scroll = { enabled = true },
---       statuscolumn = { enabled = false }, -- we set this in options.lua
---       toggle = { map = LazyVim.safe_keymap_set },
---       words = { enabled = true },
---     },
---     -- stylua: ignore
---     keys = {
---       { "<leader>n", function()
---         if Snacks.config.picker and Snacks.config.picker.enabled then
---           Snacks.picker.notifications()
---         else
---           Snacks.notifier.show_history()
---         end
---       end, desc = "Notification History" },
---       { "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
---     },
---   },
-
---   {
---     "snacks.nvim",
---     opts = {
---       dashboard = {
---         preset = {
---           pick = function(cmd, opts)
---             return LazyVim.pick(cmd, opts)()
---           end,
---           header = [[
---           ██╗      █████╗ ███████╗██╗   ██╗██╗   ██╗██╗███╗   ███╗          Z
---           ██║     ██╔══██╗╚══███╔╝╚██╗ ██╔╝██║   ██║██║████╗ ████║      Z    
---           ██║     ███████║  ███╔╝  ╚████╔╝ ██║   ██║██║██╔████╔██║   z       
---           ██║     ██╔══██║ ███╔╝    ╚██╔╝  ╚██╗ ██╔╝██║██║╚██╔╝██║ z         
---           ███████╗██║  ██║███████╗   ██║    ╚████╔╝ ██║██║ ╚═╝ ██║           
---           ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝     ╚═══╝  ╚═╝╚═╝     ╚═╝           
---    ]],
---           -- stylua: ignore
---           ---@type snacks.dashboard.Item[]
---           keys = {
---             { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
---             { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
---             { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
---             { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
---             { icon = " ", key = "c", desc = "Config", action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
---             { icon = " ", key = "s", desc = "Restore Session", section = "session" },
---             { icon = " ", key = "x", desc = "Lazy Extras", action = ":LazyExtras" },
---             { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
---             { icon = " ", key = "q", desc = "Quit", action = ":qa" },
---           },
---         },
---       },
---     },
---   },
-
--- -- Snacks utils
---   {
---     "snacks.nvim",
---     opts = {
---       bigfile = { enabled = true },
---       quickfile = { enabled = true },
---       terminal = {
---         win = {
---           keys = {
---             nav_h = { "<C-h>", term_nav("h"), desc = "Go to Left Window", expr = true, mode = "t" },
---             nav_j = { "<C-j>", term_nav("j"), desc = "Go to Lower Window", expr = true, mode = "t" },
---             nav_k = { "<C-k>", term_nav("k"), desc = "Go to Upper Window", expr = true, mode = "t" },
---             nav_l = { "<C-l>", term_nav("l"), desc = "Go to Right Window", expr = true, mode = "t" },
---             hide_slash = { "<C-/>", "hide", desc = "Hide Terminal", mode = "t" },
---             hide_underscore = { "<c-_>", "hide", desc = "which_key_ignore", mode = "t" },
---           },
---         },
---       },
---     },
---     -- stylua: ignore
---     keys = {
---       { "<leader>.",  function() Snacks.scratch() end, desc = "Toggle Scratch Buffer" },
---       { "<leader>S",  function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
---       { "<leader>dps", function() Snacks.profiler.scratch() end, desc = "Profiler Scratch Buffer" },
---     },
---   },
-
--- return {
---   desc = "Snacks File Explorer",
---   recommended = true,
---   "folke/snacks.nvim",
---   opts = { explorer = {} },
---   keys = {
---     {
---       "<leader>fe",
---       function()
---         Snacks.explorer({ cwd = LazyVim.root() })
---       end,
---       desc = "Explorer Snacks (root dir)",
---     },
---     {
---       "<leader>fE",
---       function()
---         Snacks.explorer()
---       end,
---       desc = "Explorer Snacks (cwd)",
---     },
---     { "<leader>e", "<leader>fe", desc = "Explorer Snacks (root dir)", remap = true },
---     { "<leader>E", "<leader>fE", desc = "Explorer Snacks (cwd)", remap = true },
---   },
--- }
-
--- Snacks picker
+return {
+  "folke/snacks.nvim",
+  priority = 1000,
+  lazy = false,
+  ---@type snacks.Config
+  opts = {
+    -- your configuration comes here
+    -- or leave it empty to use the default settings
+    -- refer to the configuration section below
+    bigfile = { enabled = true },
+    dashboard = { enabled = true },
+    explorer = { enabled = true },
+    indent = { enabled = true },
+    input = { enabled = true },
+    picker = { enabled = true },
+    notifier = { enabled = true, timeout = 3000 },
+    quickfile = { enabled = true },
+    scope = { enabled = true },
+    scroll = { enabled = true },
+    statuscolumn = { enabled = false },
+    words = { enabled = true },
+  }
+}
