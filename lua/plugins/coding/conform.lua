@@ -1,15 +1,16 @@
-
-return { 
+return {
   -- Autoformat
-  'stevearc/conform.nvim',
-  event = { 'BufWritePre' },
-  cmd = { 'ConformInfo' },
+  "stevearc/conform.nvim",
+  event = { "BufWritePre" },
+  cmd = { "ConformInfo" },
   keys = {
     {
       "<leader>cf",
-      function() require('conform').format { async = true, lsp_format = 'fallback' } end,
-      mode = '',
-      desc = '[F]ormat buffer',
+      function()
+        require("conform").format({ async = true, lsp_format = "fallback" })
+      end,
+      mode = "",
+      desc = "[F]ormat buffer",
     },
   },
   ---@module 'conform'
@@ -26,19 +27,26 @@ return {
       else
         return {
           timeout_ms = 500,
-          lsp_format = 'fallback',
+          lsp_format = "fallback",
         }
       end
     end,
+    default_format_opts = {
+      timeout_ms = 3000,
+      async = false, -- not recommended to change
+      quiet = false, -- not recommended to change
+      lsp_format = "fallback", -- not recommended to change
+    },
     formatters_by_ft = {
-      lua = { 'stylua' },
+      lua = { "stylua" },
+      sh = { "shfmt" },
       -- Conform can also run multiple formatters sequentially
       python = { "isort", "black" },
-      javascript = { 'prettierd', 'prettier', stop_after_first = true },
-      javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
-      typescript = { 'prettierd', 'prettier', stop_after_first = true },
-      typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
-      java = { 'google-java-format' },
+      javascript = { "prettierd", "prettier", stop_after_first = true },
+      javascriptreact = { "prettierd", "prettier", stop_after_first = true },
+      typescript = { "prettierd", "prettier", stop_after_first = true },
+      typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+      java = { "google-java-format" },
       --
       -- You can use 'stop_after_first' to run the first available formatter from the list
       -- javascript = { "prettierd", "prettier", stop_after_first = true },
