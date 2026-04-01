@@ -106,6 +106,11 @@ return {
         -- map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
         map('grt', vim.lsp.buf.type_definition, '[G]oto [T]ype Definition')
 
+        -- Signature help
+        map('K', function() return vim.lsp.buf.hover() end, 'Signature Hover')
+        map('grK', function() return vim.lsp.buf.signature_help() end, "Signature Help")
+        map('<c-k>', function() return vim.lsp.buf.signature_help() end, "Signature Help", {"i"})
+
         -- The following two autocommands are used to highlight references of the
         -- word under your cursor when your cursor rests there for a little while.
         --    See `:help CursorHold` for information about when this is executed
