@@ -5,28 +5,28 @@
 ---@module 'lazy'
 ---@type LazySpec
 return {
-  'lewis6991/gitsigns.nvim',
+  "lewis6991/gitsigns.nvim",
   ---@module 'gitsigns'
   ---@type Gitsigns.Config
   ---@diagnostic disable-next-line: missing-fields
   opts = {
     signs = {
-      add = { text = '+' }, ---@diagnostic disable-line: missing-fields
-      change = { text = '~' }, ---@diagnostic disable-line: missing-fields
-      delete = { text = '_' }, ---@diagnostic disable-line: missing-fields
-      topdelete = { text = '‾' }, ---@diagnostic disable-line: missing-fields
-      changedelete = { text = '~' }, ---@diagnostic disable-line: missing-fields
-      untracked = { text = '~' }, ---@diagnostic disable-line: missing-fields
+      add = { text = "+" }, ---@diagnostic disable-line: missing-fields
+      change = { text = "~" }, ---@diagnostic disable-line: missing-fields
+      delete = { text = "_" }, ---@diagnostic disable-line: missing-fields
+      topdelete = { text = "‾" }, ---@diagnostic disable-line: missing-fields
+      changedelete = { text = "~" }, ---@diagnostic disable-line: missing-fields
+      untracked = { text = "~" }, ---@diagnostic disable-line: missing-fields
     },
     signs_staged = {
-      add = { text = '+' }, ---@diagnostic disable-line: missing-fields
-      change = { text = '~' }, ---@diagnostic disable-line: missing-fields
-      delete = { text = '_' }, ---@diagnostic disable-line: missing-fields
-      topdelete = { text = '‾' }, ---@diagnostic disable-line: missing-fields
-      changedelete = { text = '~' }, ---@diagnostic disable-line: missing-fields
+      add = { text = "+" }, ---@diagnostic disable-line: missing-fields
+      change = { text = "~" }, ---@diagnostic disable-line: missing-fields
+      delete = { text = "_" }, ---@diagnostic disable-line: missing-fields
+      topdelete = { text = "‾" }, ---@diagnostic disable-line: missing-fields
+      changedelete = { text = "~" }, ---@diagnostic disable-line: missing-fields
     },
     on_attach = function(bufnr)
-      local gitsigns = require 'gitsigns'
+      local gitsigns = require("gitsigns")
 
       local function map(mode, l, r, opts)
         opts = opts or {}
@@ -35,43 +35,73 @@ return {
       end
 
       -- Navigation
-      map('n', ']h', function()
+      map("n", "]h", function()
         if vim.wo.diff then
-          vim.cmd.normal { ']c', bang = true }
+          vim.cmd.normal({ "]c", bang = true })
         else
-          gitsigns.nav_hunk 'next'
+          gitsigns.nav_hunk("next")
         end
-      end, { desc = 'Jump to next git [c]hange' })
+      end, { desc = "Jump to next git [c]hange" })
 
-      map('n', '[h', function()
+      map("n", "[h", function()
         if vim.wo.diff then
-          vim.cmd.normal { '[c', bang = true }
+          vim.cmd.normal({ "[c", bang = true })
         else
-          gitsigns.nav_hunk 'prev'
+          gitsigns.nav_hunk("prev")
         end
-      end, { desc = 'Jump to previous git [c]hange' })
+      end, { desc = "Jump to previous git [c]hange" })
 
       -- Actions
       -- visual mode
-      map('v', '<leader>ghs', function() gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' } end, { desc = 'git [s]tage hunk' })
-      map('v', '<leader>ghr', function() gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' } end, { desc = 'git [r]eset hunk' })
-      
-      -- normal mode
-      map({ "n", "x" }, '<leader>ghs', gitsigns.stage_hunk, { desc = 'git hunk [s]tage' })
-      map({ "n", "x" }, '<leader>ghr', gitsigns.reset_hunk, { desc = 'git hunk [r]eset' })
-      map('n', '<leader>ghS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })
-      map('n', '<leader>ghu', gitsigns.stage_hunk, { desc = 'git [u]ndo stage hunk' })
-      map('n', '<leader>ghR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
-      map('n', '<leader>ghp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
-      map('n', '<leader>ghb', function() gitsigns.blame_line({ full = true }) end, { desc = 'git [b]lame line' })
-      map('n', '<leader>ghB', function() gitsigns.blame() end, { desc = 'git [b]lame buffer' })
-      map('n', '<leader>ghd', gitsigns.diffthis, { desc = 'git [d]iff against index' })
-      map('n', '<leader>ghD', function() gitsigns.diffthis '@' end, { desc = 'git [D]iff against last commit' })
-      
-      -- Toggles
-      map('n', '<leader>gtb', gitsigns.toggle_current_line_blame, { desc = '[T]oggle git show [b]lame line' })
-      map('n', '<leader>gtD', gitsigns.preview_hunk_inline, { desc = '[T]oggle git show [D]eleted' })
-    end,
-  }
-}
+      map("v", "<leader>ghs", function()
+        gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+      end, { desc = "git [s]tage hunk" })
+      map("v", "<leader>ghr", function()
+        gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+      end, { desc = "git [r]eset hunk" })
 
+      -- normal mode
+      map("n", "]H", function()
+        gitsigns.nav_hunk("last")
+      end, { desc = "Last Hunk" })
+      map("n", "[H", function()
+        gitsigns.nav_hunk("first")
+      end, { desc = "First Hunk" })
+      map({ "n", "x" }, "<leader>ghs", gitsigns.stage_hunk, { desc = "git hunk [s]tage" })
+      map({ "n", "x" }, "<leader>ghr", gitsigns.reset_hunk, { desc = "git hunk [r]eset" })
+      map("n", "<leader>ghS", gitsigns.stage_buffer, { desc = "git [S]tage buffer" })
+      map("n", "<leader>ghu", gitsigns.undo_stage_hunk, { desc = "git [u]ndo stage hunk" })
+      map("n", "<leader>ghR", gitsigns.reset_buffer, { desc = "git [R]eset buffer" })
+      map("n", "<leader>ghp", gitsigns.preview_hunk, { desc = "git [p]review hunk" })
+      map("n", "<leader>ghi", gitsigns.preview_hunk_inline, { desc = "[T]oggle git show [D]eleted" })
+
+      map("n", "<leader>ghb", function()
+        gitsigns.blame_line({ full = true })
+      end, { desc = "[g]it [b]lame line" })
+
+      map("n", "<leader>ghB", function()
+        gitsigns.blame()
+      end, { desc = "[g]it [B]lame buffer" })
+
+      map("n", "<leader>ghd", gitsigns.diffthis, { desc = "git [d]iff against index" })
+      map("n", "<leader>ghD", function()
+        gitsigns.diffthis("@")
+      end, { desc = "git [D]iff against last commit" })
+      map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "GitSigns Select Hunk" })
+    end,
+  },
+  {
+    "gitsigns.nvim",
+    opts = function()
+      Snacks.toggle({
+        name = "Git Signs",
+        get = function()
+          return require("gitsigns.config").config.signcolumn
+        end,
+        set = function(state)
+          require("gitsigns").toggle_signs(state)
+        end,
+      }):map("<leader>uG")
+    end,
+  },
+}

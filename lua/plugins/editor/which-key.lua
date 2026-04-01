@@ -6,6 +6,7 @@ return {
     -- delay between pressing a key and opening which-key (milliseconds)
     -- this setting is independent of vim.o.timeoutlen
     delay = 0,
+    preset = "helix",
     icons = {
       -- set icon mappings to true if you have a Nerd Font
       mappings = vim.g.have_nerd_font,
@@ -45,13 +46,39 @@ return {
 
     -- Document existing key chains
     spec = {
+      { "<leader>c", group = "[C]ode" },
+      { "<leader>d", group = "[D]ebug" },
+      { "<leader>f", group = "file/find" },
+      { '<leader>g', group = '[G]it' },
+      { '<leader>gh', group = '[G]it [H]unks', mode = { 'n', 'v' } },
+      { "<leader>q", group = "quit/session" },
       { '<leader>s', group = '[S]earch' },
-      { '<leader>t', group = '[T]oggle' },
-      { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+      { "<leader>u", group = "ui" },
+      { "<leader>x", group = "diagnostics/quickfix" },
+      { "[", group = "prev" },
+      { "]", group = "next" },
+      { 'gr', group = 'LSP Actions', mode = { 'n' } },
+      { "z", group = "fold" },
     },
     triggers = {
       { '<auto>', mode = 'nixsotc' },
       { 's', mode = { 'n', 'v' } },
+    },
+  },
+  keys = {
+    {
+      "<leader>?",
+      function()
+        require("which-key").show({ global = false })
+      end,
+      desc = "Buffer Keymaps (which-key)",
+    },
+    {
+      "<c-w><space>",
+      function()
+        require("which-key").show({ keys = "<c-w>", loop = true })
+      end,
+      desc = "Window Hydra Mode (which-key)",
     },
   },
 }
