@@ -1,4 +1,4 @@
--- lazy.nvim
+-- dashboard
 return {
   "folke/snacks.nvim",
   ---@type snacks.Config
