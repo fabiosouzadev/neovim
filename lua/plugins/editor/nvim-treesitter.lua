@@ -18,12 +18,7 @@ return {
       'query',
       'vim',
       'vimdoc',
-      'typescript',
       'yaml',
-      'prisma',
-      'php',
-      'javascript',
-      'graphql',
     }
     require('nvim-treesitter').install(parsers)
     vim.api.nvim_create_autocmd('FileType', {

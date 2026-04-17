@@ -24,6 +24,7 @@ require("lazy").setup({
     { import = "plugins.editor" },
     { import = "plugins.lsp" },
     { import = "plugins.dap" },
+    { import = "plugins.langs" },
   },
   rocks = {
     enabled = false,

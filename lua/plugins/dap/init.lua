@@ -21,10 +21,7 @@ return {
 
     -- Installs the debug adapters for you
     'mason-org/mason.nvim',
-    'jay-babu/mason-nvim-dap.nvim',
-
-    -- Add your own debuggers here
-    'leoluz/nvim-dap-go',
+    'jay-babu/mason-nvim-dap.nvim'
   },
   keys = {
     -- Basic debugging keymaps, feel free to change to your liking!
@@ -104,8 +101,6 @@ return {
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
         'delve',
-        'js',
-        'python',
       },
     }
 

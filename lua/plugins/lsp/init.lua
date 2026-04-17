@@ -272,10 +272,9 @@ return {
     vim.list_extend(ensure_installed, {
       -- You can add other tools here that you want Mason to install
       "stylua", -- Used to format Lua code
-      "ts_ls",
+      "lua_ls",
       "prettier",
       "prettierd",
-      "jdtls",
     })
 
     require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
