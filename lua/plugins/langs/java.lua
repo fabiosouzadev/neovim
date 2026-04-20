@@ -64,7 +64,7 @@ return {
       ensure_installed = {
         'java-debug-adapter',
         'java-test',
-        'jdtls',
+        'jdtls'
       },
     },
   },
@@ -261,20 +261,3 @@ return {
     end,
   },
 }
-
--- local config = {
---   -- ... other config
---   settings = {
---     java = {
---       configuration = {
---         runtimes = {
---           {
---             name = "JavaSE-21",
---             path = vim.fn.expand("~/.local/share/mise/installs/java/21"), -- example path
---           },
---         },
---       },
---     },
---   },
--- }
--- require('jdtls').start_or_attach(config)
