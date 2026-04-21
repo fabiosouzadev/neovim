@@ -114,13 +114,16 @@ local function make_cmd()
     "-Dosgi.bundles.defaultStartLevel=4",
     "-Declipse.product=org.eclipse.jdt.ls.core.product",
 
+    "-Djava.import.generatesMetadataFilesAtProjectRoot=false",
+
     "-Dlog.protocol=true",
     "-Dlog.level=ALL",
 
     "-javaagent:" .. lombok,
 
+
     "-Xms1g",
-    "-Xmx2g",
+    "-Xmx4g",
 
     "--add-modules=ALL-SYSTEM",
     "--add-opens", "java.base/java.util=ALL-UNNAMED",
@@ -162,6 +165,18 @@ return {
     opts = { ensure_installed = { 'java' } },
   },
 
+  {
+    'mason-org/mason.nvim',
+    opts = {
+      ensure_installed = {
+        'lemminx',
+        'jdtls',
+        'java-debug-adapter',
+        'java-test'
+      },
+    },
+  },
+
   -- Configure nvim-lspconfig to install the server automatically via mason, but
   -- defer actually starting it to our configuration of nvim-jtdls below.
   {
@@ -170,22 +185,31 @@ return {
       -- make sure mason installs the server
       servers = {
         jdtls = {},
+        lemminx = {
+          init_options = {
+            settings = {
+              xml = {
+                format = {
+                  enabled = false,
+                  splitAttributes = "preserve",
+                  maxLineWidth = 280,
+                },
+              },
+              xslt = {
+                format = {
+                  enabled = false,
+                  splitAttributes = "preserve",
+                  maxLineWidth = 280,
+                },
+              },
+            },
+          },
+        },
       },
       setup = {
         jdtls = function()
           return true -- avoid duplicate servers
         end,
-      },
-    },
-  },
-
-  {
-    'mason-org/mason.nvim',
-    opts = {
-      ensure_installed = {
-        'jdtls',
-        'java-debug-adapter',
-        'java-test'
       },
     },
   },
