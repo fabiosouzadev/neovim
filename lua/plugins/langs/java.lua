@@ -165,22 +165,21 @@ return {
     opts = { ensure_installed = { 'java' } },
   },
 
-  {
-    'mason-org/mason.nvim',
-    opts = {
-      ensure_installed = {
-        'lemminx',
-        'jdtls',
-        'java-debug-adapter',
-        'java-test'
-      },
-    },
-  },
-
   -- Configure nvim-lspconfig to install the server automatically via mason, but
   -- defer actually starting it to our configuration of nvim-jtdls below.
   {
     'neovim/nvim-lspconfig',
+    dependencies = {
+      {
+        "mason-org/mason.nvim",
+        opts = { 
+          ensure_installed = { 
+            'lemminx',
+            'jdtls',
+          } 
+        },
+      },
+    },
     opts = {
       -- make sure mason installs the server
       servers = {
@@ -215,6 +214,31 @@ return {
   },
 
   -- Set up nvim-dap to debug to java files.
+  -- Ensure java debugger and test packages are installed.
+  {
+    "mfussenegger/nvim-dap",
+    optional = true,
+    opts = function()
+      -- Simple configuration to attach to remote java debug process
+      -- Taken directly from https://github.com/mfussenegger/nvim-dap/wiki/Java
+      local dap = require("dap")
+      dap.configurations.java = {
+        {
+          type = "java",
+          request = "attach",
+          name = "Debug (Attach) - Remote",
+          hostName = "127.0.0.1",
+          port = 5005,
+        },
+      }
+    end,
+    dependencies = {
+      {
+        "mason-org/mason.nvim",
+        opts = { ensure_installed = { "java-debug-adapter", "java-test" } },
+      },
+    },
+  },
 
   -- Set up nvim-jdtls to attach to java files.
   {
@@ -387,20 +411,3 @@ return {
     end,
   },
 }
-
--- local config = {
---   -- ... other config
---   settings = {
---     java = {
---       configuration = {
---         runtimes = {
---           {
---             name = "JavaSE-21",
---             path = vim.fn.expand("~/.local/share/mise/installs/java/21"), -- example path
---           },
---         },
---       },
---     },
---   },
--- }
--- require('jdtls').start_or_attach(config)
