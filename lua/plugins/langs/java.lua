@@ -7,32 +7,153 @@ local java_filetypes = { 'java' }
 ---@param config table
 ---@param custom function | table | nil
 local function extend_or_override(config, custom, ...)
-  if type(custom) == 'function' then
+  if type(custom) == "function" then
     config = custom(config, ...) or config
   elseif custom then
-    config = vim.tbl_deep_extend('force', config, custom) --[[@as table]]
+    config = vim.tbl_deep_extend("force", config, custom)
   end
   return config
 end
 
--- local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
--- local workspace_dir = "/home/eronads/workspaces/" .. project_name
+local function path_exists(p)
+  return vim.uv.fs_stat(p) ~= nil
+end
 
--- File types that signify a Java project's root directory. This will be
--- used by eclipse to determine what constitutes a workspace
+local function system(cmd)
+  local out = vim.fn.system(cmd)
+  return vim.trim(out)
+end
 
--- local root_markers = {
---   'gradlew',
---   'mvnw',
---   '.git',
---   "build.gradle",
---   "build.gradle.kts",
---   "build.xml", -- Ant
---   "pom.xml", -- Maven
---   "settings.gradle", -- Gradle
---   "settings.gradle.kts", -- Gradle
--- }
--- local root_dir = require('jdtls.setup').find_root(root_markers)
+-- --------------------------------------------------------------------
+-- MISE HELPERS
+-- --------------------------------------------------------------------
+
+-- Java fixo para rodar JDTLS (sempre 21+)
+local function get_jdtls_java()
+  local p = system("mise where java@21")
+  if p ~= "" and path_exists(p .. "/bin/java") then
+    return p .. "/bin/java"
+  end
+
+  -- fallback
+  return vim.fn.expand("~/.local/share/mise/installs/java/21/bin/java")
+end
+
+-- Java do projeto (pega versão local do mise)
+local function get_project_java()
+  local p = system("mise where java")
+  if p ~= "" and path_exists(p .. "/bin/java") then
+    return p
+  end
+  return nil
+end
+
+-- --------------------------------------------------------------------
+-- JDTLS HELPERS
+-- --------------------------------------------------------------------
+
+local function get_mason_jdtls_path()
+  return vim.fn.stdpath("data") .. "/mason/packages/jdtls"
+end
+
+local function get_launcher()
+  local base = get_mason_jdtls_path()
+  local jar = vim.fn.glob(base .. "/plugins/org.eclipse.equinox.launcher_*.jar")
+  return jar
+end
+
+local function get_config_dir()
+  if vim.fn.has("mac") == 1 then
+    return get_mason_jdtls_path() .. "/config_mac"
+  elseif vim.fn.has("win32") == 1 then
+    return get_mason_jdtls_path() .. "/config_win"
+  end
+  return get_mason_jdtls_path() .. "/config_linux"
+end
+
+local function get_root_dir()
+  local markers = {
+    ".git",
+    "mvnw",
+    "gradlew",
+    "pom.xml",
+    "build.gradle",
+    "build.gradle.kts",
+    "settings.gradle",
+    "settings.gradle.kts",
+  }
+
+  return vim.fs.root(0, markers)
+end
+
+local function get_project_name(root_dir)
+  return root_dir and vim.fs.basename(root_dir) or "default"
+end
+
+local function get_workspace(project_name)
+  return vim.fn.stdpath("cache") .. "/jdtls-workspace/" .. project_name
+end
+
+local function get_lombok()
+  return vim.fn.stdpath("data") .. "/mason/share/jdtls/lombok.jar"
+end
+
+local function make_cmd()
+  local java = get_jdtls_java()
+  local launcher = get_launcher()
+  local config = get_config_dir()
+  local root_dir = get_root_dir()
+  local project = get_project_name(root_dir)
+  local workspace = get_workspace(project)
+  local lombok = get_lombok()
+
+  return {
+    java,
+
+    "-Declipse.application=org.eclipse.jdt.ls.core.id1",
+    "-Dosgi.bundles.defaultStartLevel=4",
+    "-Declipse.product=org.eclipse.jdt.ls.core.product",
+
+    "-Dlog.protocol=true",
+    "-Dlog.level=ALL",
+
+    "-javaagent:" .. lombok,
+
+    "-Xms1g",
+    "-Xmx2g",
+
+    "--add-modules=ALL-SYSTEM",
+    "--add-opens", "java.base/java.util=ALL-UNNAMED",
+    "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+
+    "-jar", launcher,
+    "-configuration", config,
+    "-data", workspace,
+  }
+end
+
+local function get_bundles()
+  local bundles = {}
+
+  local debug = vim.fn.glob(
+    vim.fn.stdpath("data")
+      .. "/mason/share/java-debug-adapter/com.microsoft.java.debug.plugin-*.jar",
+    false,
+    true
+  )
+
+  vim.list_extend(bundles, debug)
+
+  local tests = vim.fn.glob(
+    vim.fn.stdpath("data") .. "/mason/share/java-test/*.jar",
+    false,
+    true
+  )
+
+  vim.list_extend(bundles, tests)
+
+  return bundles
+end
 
 return {
   -- Add java to treesitter.
@@ -62,9 +183,9 @@ return {
     'mason-org/mason.nvim',
     opts = {
       ensure_installed = {
+        'jdtls',
         'java-debug-adapter',
-        'java-test',
-        'jdtls'
+        'java-test'
       },
     },
   },
@@ -77,37 +198,21 @@ return {
     dependencies = { 'folke/which-key.nvim' },
     ft = java_filetypes,
     opts = function()
-      local cmd = { vim.fn.exepath 'jdtls' }
-      local lombok_jar = vim.fn.expand '$MASON/share/jdtls/lombok.jar'
-      table.insert(cmd, string.format('--jvm-arg=-javaagent:%s', lombok_jar))
+      local cmd = make_cmd()
+      local root_dir = get_root_dir()
+      local project_name = get_project_name(root_dir)
+      local bundles = get_bundles()
       return {
-        root_dir = function(path) return vim.fs.root(path, vim.lsp.config.jdtls.root_markers) end,
+        root_dir = root_dir,
 
         -- How to find the project name for a given root dir.
-        project_name = function(root_dir) return root_dir and vim.fs.basename(root_dir) end,
-
-        -- Where are the config and workspace dirs for a project?
-        jdtls_config_dir = function(project_name) return vim.fn.stdpath 'cache' .. '/jdtls/' .. project_name .. '/config' end,
-        jdtls_workspace_dir = function(project_name) return vim.fn.stdpath 'cache' .. '/jdtls/' .. project_name .. '/workspace' end,
+        project_name = project_name,
 
         -- How to run jdtls. This can be overridden to a full java command-line
         -- if the Python wrapper script doesn't suffice.
         cmd = cmd,
-        full_cmd = function(opts)
-          local fname = vim.api.nvim_buf_get_name(0)
-          local root_dir = opts.root_dir(fname)
-          local project_name = opts.project_name(root_dir)
-          local cmd = vim.deepcopy(opts.cmd)
-          if project_name then
-            vim.list_extend(cmd, {
-              '-configuration',
-              opts.jdtls_config_dir(project_name),
-              '-data',
-              opts.jdtls_workspace_dir(project_name),
-            })
-          end
-          return cmd
-        end,
+
+        bundles = bundles,
 
         settings = {
           java = {
@@ -120,7 +225,13 @@ return {
               runtimes = {
                 {
                   name = 'JavaSE-21',
-                  path = vim.fn.expand '~/.local/share/mise/installs/java/temurin-21', -- example path
+                  path = vim.fn.expand '~/.local/share/mise/installs/java/21', -- example path
+                  -- path = home .. "/.local/share/mise/installs/java/temurin-21"
+                  default = true,
+                },
+                {
+                  name = 'JavaSE-26',
+                  path = vim.fn.expand '~/.local/share/mise/installs/java/latest', -- example path
                   -- path = home .. "/.local/share/mise/installs/java/temurin-21"
                   default = true,
                 },
@@ -131,29 +242,20 @@ return {
       }
     end,
     config = function(_, opts)
-      -- Find the extra bundles that should be passed on the jdtls command-line
-      -- if nvim-dap is enabled with java debug/test.
-      local bundles = {} ---@type string[]
-      local mason_registry = require 'mason-registry'
-      if mason_registry.is_installed 'java-debug-adapter' then
-        bundles = vim.fn.glob('$MASON/share/java-debug-adapter/com.microsoft.java.debug.plugin-*jar', false, true)
-        -- java-test also depends on java-debug-adapter.
-        if mason_registry.is_installed 'java-test' then vim.list_extend(bundles, vim.fn.glob('$MASON/share/java-test/*.jar', false, true)) end
-      end
-
+      
       local function attach_jdtls()
         local fname = vim.api.nvim_buf_get_name(0)
 
         -- Configuration can be augmented and overridden by opts.jdtls
         local config = extend_or_override({
-          cmd = opts.full_cmd(opts),
-          root_dir = opts.root_dir(fname),
+          cmd = opts.cmd,
+          root_dir = opts.root_dir,
           init_options = {
-            bundles = bundles,
+            bundles = opts.bundles,
           },
           settings = opts.settings,
           -- enable CMP capabilities
-          capabilities = require('blink.cmp').get_lsp_capabilities() or nil,
+          -- capabilities = require('blink.cmp').get_lsp_capabilities() or nil,
         }, opts.jdtls)
 
         -- Existing server will be reused if the root_dir matches.
@@ -261,3 +363,20 @@ return {
     end,
   },
 }
+
+-- local config = {
+--   -- ... other config
+--   settings = {
+--     java = {
+--       configuration = {
+--         runtimes = {
+--           {
+--             name = "JavaSE-21",
+--             path = vim.fn.expand("~/.local/share/mise/installs/java/21"), -- example path
+--           },
+--         },
+--       },
+--     },
+--   },
+-- }
+-- require('jdtls').start_or_attach(config)
