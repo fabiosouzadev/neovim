@@ -7,17 +7,15 @@ local java_filetypes = { 'java' }
 ---@param config table
 ---@param custom function | table | nil
 local function extend_or_override(config, custom, ...)
-  if type(custom) == "function" then
+  if type(custom) == 'function' then
     config = custom(config, ...) or config
   elseif custom then
-    config = vim.tbl_deep_extend("force", config, custom)
+    config = vim.tbl_deep_extend('force', config, custom)
   end
   return config
 end
 
-local function path_exists(p)
-  return vim.uv.fs_stat(p) ~= nil
-end
+local function path_exists(p) return vim.uv.fs_stat(p) ~= nil end
 
 local function system(cmd)
   local out = vim.fn.system(cmd)
@@ -30,21 +28,17 @@ end
 
 -- Java fixo para rodar JDTLS (sempre 21+)
 local function get_jdtls_java()
-  local p = system("mise where java@21")
-  if p ~= "" and path_exists(p .. "/bin/java") then
-    return p .. "/bin/java"
-  end
+  local p = system 'mise where java@21'
+  if p ~= '' and path_exists(p .. '/bin/java') then return p .. '/bin/java' end
 
   -- fallback
-  return vim.fn.expand("~/.local/share/mise/installs/java/21/bin/java")
+  return vim.fn.expand '~/.local/share/mise/installs/java/21/bin/java'
 end
 
 -- Java do projeto (pega versão local do mise)
 local function get_project_java()
-  local p = system("mise where java")
-  if p ~= "" and path_exists(p .. "/bin/java") then
-    return p
-  end
+  local p = system 'mise where java'
+  if p ~= '' and path_exists(p .. '/bin/java') then return p end
   return nil
 end
 
@@ -52,51 +46,43 @@ end
 -- JDTLS HELPERS
 -- --------------------------------------------------------------------
 
-local function get_mason_jdtls_path()
-  return vim.fn.stdpath("data") .. "/mason/packages/jdtls"
-end
+local function get_mason_jdtls_path() return vim.fn.stdpath 'data' .. '/mason/packages/jdtls' end
 
 local function get_launcher()
   local base = get_mason_jdtls_path()
-  local jar = vim.fn.glob(base .. "/plugins/org.eclipse.equinox.launcher_*.jar")
+  local jar = vim.fn.glob(base .. '/plugins/org.eclipse.equinox.launcher_*.jar')
   return jar
 end
 
 local function get_config_dir()
-  if vim.fn.has("mac") == 1 then
-    return get_mason_jdtls_path() .. "/config_mac"
-  elseif vim.fn.has("win32") == 1 then
-    return get_mason_jdtls_path() .. "/config_win"
+  if vim.fn.has 'mac' == 1 then
+    return get_mason_jdtls_path() .. '/config_mac'
+  elseif vim.fn.has 'win32' == 1 then
+    return get_mason_jdtls_path() .. '/config_win'
   end
-  return get_mason_jdtls_path() .. "/config_linux"
+  return get_mason_jdtls_path() .. '/config_linux'
 end
 
 local function get_root_dir()
   local markers = {
-    ".git",
-    "mvnw",
-    "gradlew",
-    "pom.xml",
-    "build.gradle",
-    "build.gradle.kts",
-    "settings.gradle",
-    "settings.gradle.kts",
+    '.git',
+    'mvnw',
+    'gradlew',
+    'pom.xml',
+    'build.gradle',
+    'build.gradle.kts',
+    'settings.gradle',
+    'settings.gradle.kts',
   }
 
   return vim.fs.root(0, markers)
 end
 
-local function get_project_name(root_dir)
-  return root_dir and vim.fs.basename(root_dir) or "default"
-end
+local function get_project_name(root_dir) return root_dir and vim.fs.basename(root_dir) or 'default' end
 
-local function get_workspace(project_name)
-  return vim.fn.stdpath("cache") .. "/jdtls-workspace/" .. project_name
-end
+local function get_workspace(project_name) return vim.fn.stdpath 'cache' .. '/jdtls-workspace/' .. project_name end
 
-local function get_lombok()
-  return vim.fn.stdpath("data") .. "/mason/share/jdtls/lombok.jar"
-end
+local function get_lombok() return vim.fn.stdpath 'data' .. '/mason/share/jdtls/lombok.jar' end
 
 local function make_cmd()
   local java = get_jdtls_java()
@@ -110,48 +96,45 @@ local function make_cmd()
   return {
     java,
 
-    "-Declipse.application=org.eclipse.jdt.ls.core.id1",
-    "-Dosgi.bundles.defaultStartLevel=4",
-    "-Declipse.product=org.eclipse.jdt.ls.core.product",
+    '-Declipse.application=org.eclipse.jdt.ls.core.id1',
+    '-Dosgi.bundles.defaultStartLevel=4',
+    '-Declipse.product=org.eclipse.jdt.ls.core.product',
 
-    "-Djava.import.generatesMetadataFilesAtProjectRoot=false",
+    '-Djava.import.generatesMetadataFilesAtProjectRoot=false',
 
-    "-Dlog.protocol=true",
-    "-Dlog.level=ALL",
+    '-Dlog.protocol=true',
+    '-Dlog.level=ALL',
 
-    "-javaagent:" .. lombok,
+    '-javaagent:' .. lombok,
 
+    -- "-Xms1g",
+    -- "-Xmx4g",
 
-    "-Xms1g",
-    "-Xmx4g",
+    '-Xmx1g',
 
-    "--add-modules=ALL-SYSTEM",
-    "--add-opens", "java.base/java.util=ALL-UNNAMED",
-    "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+    '--add-modules=ALL-SYSTEM',
+    '--add-opens',
+    'java.base/java.util=ALL-UNNAMED',
+    '--add-opens',
+    'java.base/java.lang=ALL-UNNAMED',
 
-    "-jar", launcher,
-    "-configuration", config,
-    "-data", workspace,
+    '-jar',
+    launcher,
+    '-configuration',
+    config,
+    '-data',
+    workspace,
   }
 end
 
 local function get_bundles()
   local bundles = {}
 
-  local debug = vim.fn.glob(
-    vim.fn.stdpath("data")
-      .. "/mason/share/java-debug-adapter/com.microsoft.java.debug.plugin-*.jar",
-    false,
-    true
-  )
+  local debug = vim.fn.glob(vim.fn.stdpath 'data' .. '/mason/share/java-debug-adapter/com.microsoft.java.debug.plugin-*.jar', false, true)
 
   vim.list_extend(bundles, debug)
 
-  local tests = vim.fn.glob(
-    vim.fn.stdpath("data") .. "/mason/share/java-test/*.jar",
-    false,
-    true
-  )
+  local tests = vim.fn.glob(vim.fn.stdpath 'data' .. '/mason/share/java-test/*.jar', false, true)
 
   vim.list_extend(bundles, tests)
 
@@ -171,12 +154,12 @@ return {
     'neovim/nvim-lspconfig',
     dependencies = {
       {
-        "mason-org/mason.nvim",
-        opts = { 
-          ensure_installed = { 
+        'mason-org/mason.nvim',
+        opts = {
+          ensure_installed = {
             'lemminx',
             'jdtls',
-          } 
+          },
         },
       },
     },
@@ -190,14 +173,14 @@ return {
               xml = {
                 format = {
                   enabled = false,
-                  splitAttributes = "preserve",
+                  splitAttributes = 'preserve',
                   maxLineWidth = 280,
                 },
               },
               xslt = {
                 format = {
                   enabled = false,
-                  splitAttributes = "preserve",
+                  splitAttributes = 'preserve',
                   maxLineWidth = 280,
                 },
               },
@@ -216,26 +199,26 @@ return {
   -- Set up nvim-dap to debug to java files.
   -- Ensure java debugger and test packages are installed.
   {
-    "mfussenegger/nvim-dap",
+    'mfussenegger/nvim-dap',
     optional = true,
     opts = function()
       -- Simple configuration to attach to remote java debug process
       -- Taken directly from https://github.com/mfussenegger/nvim-dap/wiki/Java
-      local dap = require("dap")
+      local dap = require 'dap'
       dap.configurations.java = {
         {
-          type = "java",
-          request = "attach",
-          name = "Debug (Attach) - Remote",
-          hostName = "127.0.0.1",
-          port = 5005,
-        },
+        type = "java",
+        request = "attach",
+        name = "Debug (Attach) - Remote",
+        hostName = "127.0.0.1",
+        port = 5005,
+      },
       }
     end,
     dependencies = {
       {
-        "mason-org/mason.nvim",
-        opts = { ensure_installed = { "java-debug-adapter", "java-test" } },
+        'mason-org/mason.nvim',
+        opts = { ensure_installed = { 'java-debug-adapter', 'java-test' } },
       },
     },
   },
@@ -262,8 +245,22 @@ return {
 
         bundles = bundles,
 
+         -- These depend on nvim-dap, but can additionally be disabled by setting false here.
+        dap = { hotcodereplace = "auto", config_overrides = {} },
+        -- Can set this to false to disable main class scan, which is a performance killer for large project
+        dap_main = {},
+        test = true,
+
         settings = {
           java = {
+            signatureHelp = { enabled = true },
+            contentProvider = { preferred = 'fernflower' },
+            sources = {
+              organizeImports = {
+                starThreshold = 9999,
+                staticStarThreshold = 9999,
+              },
+            },
             inlayHints = {
               parameterNames = {
                 enabled = 'all',
@@ -272,16 +269,19 @@ return {
             configuration = {
               runtimes = {
                 {
+                  name = 'JavaSE-11',
+                  path = vim.fn.expand '~/.local/share/mise/installs/java/temurin-11', -- example path
+                  -- path = home .. "/.local/share/mise/installs/java/temurin-21"
+                },
+                {
                   name = 'JavaSE-21',
                   path = vim.fn.expand '~/.local/share/mise/installs/java/21', -- example path
                   -- path = home .. "/.local/share/mise/installs/java/temurin-21"
-                  default = true,
                 },
                 {
                   name = 'JavaSE-26',
                   path = vim.fn.expand '~/.local/share/mise/installs/java/latest', -- example path
                   -- path = home .. "/.local/share/mise/installs/java/temurin-21"
-                  default = true,
                 },
               },
             },
@@ -290,8 +290,8 @@ return {
       }
     end,
     config = function(_, opts)
-      
       local function attach_jdtls()
+        vim.notify('lsp server (jdtls) attached - attach_jdtls', "error")
         local fname = vim.api.nvim_buf_get_name(0)
 
         -- Configuration can be augmented and overridden by opts.jdtls
@@ -365,7 +365,9 @@ return {
             local mason_registry = require 'mason-registry'
             if mason_registry.is_installed 'java-debug-adapter' then
               -- custom init for Java debugger
+              -- vim.list_extend(opts.dap, { hotcodereplace = 'auto' })
               require('jdtls').setup_dap(opts.dap)
+              require('jdtls.dap').setup_dap_main_class_configs()
               if opts.dap_main then require('jdtls.dap').setup_dap_main_class_configs(opts.dap_main) end
 
               -- Java Test require Java debugger to work
