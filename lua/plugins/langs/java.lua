@@ -163,7 +163,6 @@ return {
           ensure_installed = {
             'lemminx',
             'jdtls',
-            'spring-boot-ls',
             'google-java-format',
             'checkstyle',
           },
