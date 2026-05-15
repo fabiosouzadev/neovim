@@ -21,42 +21,95 @@ A professional-grade, modular, and high-performance Neovim configuration built f
 
 ## ⌨️ Keymaps Reference
 
-### 🎯 General
+### 🎯 Core & General
 | Key | Action | Description |
 |-----|--------|-------------|
-| `<leader>e` | Explorer | Toggle file explorer (Snacks) |
-| `<leader><space>` | Smart Find | Smart find files (Snacks) |
-| `<leader>ff` | Find Files | Search for files by name |
-| `<leader>fg` | Live Grep | Search for text in workspace |
-| `<C-s>` | Save | Save current buffer |
+| `<Esc>` | Clear Search | Clear search highlights in normal mode |
+| `<C-s>` | Save | Save current buffer (Normal/Insert/Visual) |
 | `<leader>l` | Lazy | Open Lazy plugin manager |
+| `<leader>bD` | Close Buffer | Delete current buffer and close window |
+| `<Esc><Esc>` | Exit Terminal | Return to normal mode from terminal |
+| `n` / `N` | Search Nav | Next/Previous search result (centered) |
+| `<` / `>` | Indent | Better visual indenting (remains in visual mode) |
 
-### 🔍 Search & Navigation
+### 🧭 Navigation & Windows
 | Key | Action | Description |
 |-----|--------|-------------|
-| `gd` | Definition | Go to definition (Snacks) |
-| `gr` | References | List all references (Snacks) |
-| `gy` | Type Def | Go to type definition |
-| `K` | Hover | Show documentation under cursor |
+| `<C-h/j/k/l>` | Window Focus | Move focus to left/lower/upper/right window |
+| `<C-S-h/j/k/l>` | Window Move | Move current window left/lower/upper/right |
+| `s` / `S` | Flash | Enhanced jump / Treesitter selection |
+| `[q` / `]q` | Quickfix | Navigate to previous/next quickfix item |
+| `[t` / `]t` | Todo | Navigate to previous/next TODO comment |
+| `\\` | Neo-tree | Reveal current file in explorer |
+
+### 🔍 Search (Snacks Picker)
+| Key | Action | Description |
+|-----|--------|-------------|
+| `<leader><space>` | Smart Find | Smart file search across workspace |
+| `<leader>ff` | Find Files | Search for files by name |
+| `<leader>fg` | Live Grep | Search for text in the entire workspace |
+| `<leader>fr` | Recent | Open recent files history |
+| `<leader>fp` | Projects | List and switch between projects |
 | `<leader>sb` | Buffer Lines | Search lines in current buffer |
-| `<leader>sw` | Grep Word | Search for word under cursor |
+| `<leader>sd` | Diagnostics | List workspace diagnostics |
+| `<leader>su` | Undo | Visual undo history |
+| `<leader>sk` | Keymaps | Interactive search for all keybindings |
+| `<leader>uC` | Themes | List and switch colorschemes |
 
-### 🛠️ LSP & Quality
+### 🛠️ LSP & Code Quality
 | Key | Action | Description |
 |-----|--------|-------------|
-| `grn` | Rename | Rename symbol under cursor |
+| `gd` | Definition | Jump to definition |
+| `gr` | References | List all symbol references |
+| `gi` | Implementation | Jump to implementation |
+| `gy` | Type Def | Jump to type definition |
+| `K` | Hover | Show documentation/signature under cursor |
+| `grn` | Rename | Rename symbol across workspace |
 | `gra` | Code Action | Show available code actions |
-| `<leader>cf` | Format | Format current buffer (Conform) |
-| `[d` / `]d` | Prev/Next | Navigate diagnostics |
+| `<leader>cf` | Format | Format buffer (Conform) |
+| `[d` / `]d` | Diagnostics | Go to previous/next diagnostic line |
+| `[e` / `]e` | Errors | Go to previous/next error |
+
+### 🐙 Git
+| Key | Action | Description |
+|-----|--------|-------------|
+| `]c` / `[c` | Change | Jump to next/prev git hunk |
+| `<leader>gs` | Status | Open Git status picker |
+| `<leader>gl` | Log | Open Git log picker |
+| `<leader>ghp` | Preview | Preview current hunk changes |
+| `<leader>ghs` | Stage | Stage current hunk |
+| `<leader>ghr` | Reset | Reset current hunk |
+| `<leader>ghd` | Diff | Diff current file against index |
 
 ### 🐞 Debugging (DAP)
 | Key | Action | Description |
 |-----|--------|-------------|
-| `<F5>` | Continue | Start or continue execution |
-| `<F1>` | Step Into | Step into function |
-| `<F2>` | Step Over | Step over line |
-| `<leader>b` | Breakpoint | Toggle breakpoint |
-| `<F7>` | UI Toggle | Toggle DAP UI |
+| `<F5>` | Start/Cont | Start or continue debugging session |
+| `<F1>` | Step Into | Step into function call |
+| `<F2>` | Step Over | Step over current line |
+| `<F3>` | Step Out | Step out of current function |
+| `<leader>b` | Breakpoint | Toggle line breakpoint |
+| `<leader>B` | Cond Break | Toggle conditional breakpoint |
+| `<F7>` | UI Toggle | Toggle DAP UI interface |
+| `<leader>de` | Eval | Evaluate expression under cursor |
+
+### ☕ Java Specific
+| Key | Action | Description |
+|-----|--------|-------------|
+| `<leader>co` | Organize | Organize imports (JDTLS) |
+| `<leader>tc` | Test Class | Run all tests in current class |
+| `<leader>tm` | Test Method | Run nearest test method |
+| `<leader>cxv` | Extract Var | Extract to variable |
+| `<leader>cgs` | Super | Go to super implementation |
+
+### 🧰 Specialized Tools
+| Key | Action | Description |
+|-----|--------|-------------|
+| `<leader>xx` | Trouble | Toggle diagnostics list |
+| `<leader>sr" | Grug-far | Global search and replace |
+| `<leader>ha` | Harpoon | Add file to Harpoon |
+| `<leader>he` | Harpoon UI | Toggle Harpoon quick menu |
+| `<leader>st` | Todo List | List all TODOs in workspace |
 
 ---
 
