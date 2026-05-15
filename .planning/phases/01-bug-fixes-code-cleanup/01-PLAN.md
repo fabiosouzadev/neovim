@@ -19,7 +19,6 @@ Resolve all 12 identified concerns and remove dead code without structural chang
 - [ ] 7. **Clean ToggleTerm:** Remove LLM keymaps from `lua/plugins/ui/toggleterm.lua`. (CLEAN-03)
 - [ ] 8. **Fix Java Runtimes:** In `lua/plugins/langs/java.lua`, update hardcoded mise paths to use `vim.env.JAVA_HOME_XX` fallbacks. (CLEAN-04)
 - [ ] 9. **Enable blink.cmp for Java:** Uncomment capabilities line in `lua/plugins/langs/java.lua:306`. (CLEAN-07)
-- [ ] 10. **Remove Fidget Spinner:** Delete `lua/config/custom/fidget-spinner.lua`. (CLEAN-06)
 
 ### Wave 3: Line Endings
-- [ ] 11. **Normalize Line Endings:** Run `dos2unix` or `stylua` to convert CRLF to LF in `.lua` files. (CLEAN-05)
+- [ ] 10. **Normalize Line Endings:** Run `dos2unix` or `stylua` to convert CRLF to LF in `.lua` files. (CLEAN-05)

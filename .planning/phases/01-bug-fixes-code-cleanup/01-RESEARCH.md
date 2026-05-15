@@ -60,7 +60,7 @@ The goal of this phase is to resolve 12 specific technical debt items ("concerns
 
 ### CLEAN-06: CodeCompanion Orphan
 - **File:** `lua/config/custom/fidget-spinner.lua`
-- **Fix:** Delete this file, it's not used and depends on an uninstalled plugin.
+- **Fix:** Do not delete. The file will be kept as it will be used with `codecompanion.nvim` in the future.
 
 ### CLEAN-07: blink.cmp Capabilities
 - **File:** `lua/plugins/langs/java.lua:306`
@@ -73,5 +73,5 @@ The duplicate keymaps in `keymaps.lua` for window navigation and quickfix will b
 ## 3. Plan Requirements
 The planner must:
 1. Create tasks to modify `options.lua`, `autocmds.lua`, `lazydev.lua`, `java.lua`, `lsp/init.lua`, `dap/init.lua`, `toggleterm.lua`.
-2. Create a task to delete `fidget-spinner.lua`.
+2. Keep `fidget-spinner.lua`.
 3. Create a bash task to normalize line endings (`find lua -name "*.lua" -exec dos2unix {} +` or similar depending on OS).
