@@ -174,7 +174,6 @@ return {
       -- make sure mason installs the server
       servers = {
         jdtls = {},
-        sts_ls = {},
         lemminx = {
           init_options = {
             settings = {
@@ -275,20 +274,20 @@ return {
               },
             },
             configuration = {
-              runtimes = {
-                {
-                  name = 'JavaSE-11',
-                  path = get_mise_java('11'),
-                },
-                {
-                  name = 'JavaSE-17',
-                  path = get_mise_java('17'),
-                },
-                {
-                  name = 'JavaSE-21',
-                  path = get_mise_java('21'),
-                },
-              },
+              runtimes = (function()
+                local rt = {}
+                local versions = { '11', '17', '21' }
+                for _, v in ipairs(versions) do
+                  local path = get_mise_java(v)
+                  if path then
+                    table.insert(rt, {
+                      name = 'JavaSE-' .. v,
+                      path = path,
+                    })
+                  end
+                end
+                return rt
+              end)(),
             },
           },
         },
