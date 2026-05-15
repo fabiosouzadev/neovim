@@ -35,7 +35,7 @@ See: .planning/PROJECT.md (updated 2026-05-15)
 |-------|------|--------|
 | 1 | Bug Fixes & Code Cleanup | Completed |
 | 2 | Plugin Reorganization | Executed |
-| 3 | Performance Optimization | Context Gathered |
+| 3 | Performance Optimization | Planned |
 | 4 | Java & DAP Enhancements | Not Started |
 | 5 | Multi-Language Support | Not Started |
 | 6 | Documentation | Not Started |
