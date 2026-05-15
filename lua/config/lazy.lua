@@ -25,6 +25,7 @@ require('lazy').setup({
     { import = 'plugins.lsp' },
     { import = 'plugins.dap' },
     { import = 'plugins.langs' },
+    { import = 'plugins.ai' },
   },
   rocks = {
     enabled = false,
