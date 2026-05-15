@@ -35,8 +35,8 @@ return {
 
     dependencies = {
       'rcarriga/nvim-dap-ui',
-
-
+      'theHamsta/nvim-dap-virtual-text',
+      'jay-babu/mason-nvim-dap.nvim',
     },
     -- stylua: ignore
     keys = {
@@ -74,6 +74,24 @@ return {
       local vscode = require 'dap.ext.vscode'
       local json = require 'plenary.json'
       vscode.json_decode = function(str) return vim.json.decode(json.json_strip_comments(str)) end
+
+      require('nvim-dap-virtual-text').setup {}
+
+      require('mason-nvim-dap').setup {
+        -- Makes a best effort to setup the various debuggers with
+        -- reasonable debug configurations
+        automatic_installation = true,
+
+        -- You can provide additional configuration to the handlers,
+        -- see mason-nvim-dap.nvim's documentation for more information
+        handlers = {},
+
+        -- You'll need to check that you have the required things installed
+        -- online, please don't ask me how to install them :)
+        ensure_installed = {
+          -- Update this to ensure that you have the debuggers for the languages you want
+        },
+      }
     end,
   },
   -- fancy UI for the debugger

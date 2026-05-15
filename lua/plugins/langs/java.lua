@@ -42,6 +42,12 @@ local function get_project_java()
   return nil
 end
 
+local function get_mise_java(version)
+  local p = system('mise where java@' .. version)
+  if p ~= '' and path_exists(p .. '/bin/java') then return p end
+  return nil
+end
+
 -- --------------------------------------------------------------------
 -- JDTLS HELPERS
 -- --------------------------------------------------------------------
@@ -157,6 +163,9 @@ return {
           ensure_installed = {
             'lemminx',
             'jdtls',
+            'spring-boot-ls',
+            'google-java-format',
+            'checkstyle',
           },
         },
       },
@@ -165,6 +174,7 @@ return {
       -- make sure mason installs the server
       servers = {
         jdtls = {},
+        sts_ls = {},
         lemminx = {
           init_options = {
             settings = {
@@ -268,15 +278,15 @@ return {
               runtimes = {
                 {
                   name = 'JavaSE-11',
-                  path = vim.env.JAVA_HOME_11 or vim.fn.expand('~/.local/share/mise/installs/java/temurin-11'),
+                  path = get_mise_java('11'),
+                },
+                {
+                  name = 'JavaSE-17',
+                  path = get_mise_java('17'),
                 },
                 {
                   name = 'JavaSE-21',
-                  path = vim.env.JAVA_HOME_21 or vim.fn.expand('~/.local/share/mise/installs/java/21'),
-                },
-                {
-                  name = 'JavaSE-26',
-                  path = vim.env.JAVA_HOME_26 or vim.fn.expand('~/.local/share/mise/installs/java/latest'),
+                  path = get_mise_java('21'),
                 },
               },
             },
