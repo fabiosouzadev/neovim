@@ -26,14 +26,14 @@ See: .planning/PROJECT.md (updated 2026-05-15)
 |-------|-------|
 | Phase | 1 |
 | Name | Bug Fixes & Code Cleanup |
-| Status | Context Gathered |
+| Status | Planned |
 | Requirements | BUGS-01..05, CLEAN-01..07 |
 
 ## Progress
 
 | Phase | Name | Status |
 |-------|------|--------|
-| 1 | Bug Fixes & Code Cleanup | Context Gathered |
+| 1 | Bug Fixes & Code Cleanup | Planned |
 | 2 | Plugin Reorganization | Not Started |
 | 3 | Performance Optimization | Not Started |
 | 4 | Java & DAP Enhancements | Not Started |
