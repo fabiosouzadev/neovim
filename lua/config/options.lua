@@ -37,7 +37,7 @@ vim.g.deprecation_warnings = false
 vim.g.trouble_lualine = true
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 local opt = vim.opt
 
@@ -61,7 +61,7 @@ opt.fillchars = {
 opt.foldlevel = 99
 opt.foldmethod = 'indent'
 opt.foldtext = ''
-opt.formatexpr = 'v:lua.LazyVim.format.formatexpr()'
+
 opt.formatoptions = 'jcroqlnt' -- tcqj
 opt.grepformat = '%f:%l:%c:%m'
 opt.grepprg = 'rg --vimgrep'
@@ -106,8 +106,6 @@ opt.wrap = false -- Disable line wrap
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
 
--- opts.rocks.enabled = false
--- vim.g.lazydev_enabled = false
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- Prepend mise shims to PATH

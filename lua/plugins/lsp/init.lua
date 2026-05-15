@@ -28,16 +28,12 @@ return {
         --  See `:help lsp-config` for information about keys and how to configure
         ---@type table<string, vim.lsp.Config>
         servers = {
-          -- clangd = {},
-          -- gopls = {},
-          -- pyright = {},
-          -- rust_analyzer = {},
-          --
+
           -- Some languages (like typescript) have entire language plugins that can be useful:
           --    https://github.com/pmizio/typescript-tools.nvim
           --
           -- But for many setups, the LSP (`ts_ls`) will work just fine
-          -- ts_ls = {},
+
 
           stylua = {}, -- Used to format Lua code
 
@@ -146,18 +142,15 @@ return {
           map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
 
           -- Find references for the word under your cursor.
-          -- map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
           map('grr', vim.lsp.buf.references, '[G]oto [R]eferences')
 
           -- Jump to the implementation of the word under your cursor.
           --  Useful when your language has ways of declaring types without an actual implementation.
-          -- map('gri', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
           map('gri', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
 
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-t>.
-          -- map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
           map('grd', vim.lsp.buf.definition, '[G]oto [D]efinition')
 
           -- WARN: This is not Goto Definition, this is Goto Declaration.
@@ -166,18 +159,15 @@ return {
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
-          -- map('gO', require('telescope.builtin').lsp_document_symbols, 'Open Document Symbols')
           map('gO', vim.lsp.buf.document_symbol, 'Open Document Symbols')
 
           -- Fuzzy find all the symbols in your current workspace.
           --  Similar to document symbols, except searches over your entire project.
-          -- map('gW', require('telescope.builtin').lsp_dynamic_workspace_symbols, 'Open Workspace Symbols')
           map('gW', vim.lsp.buf.workspace_symbol, 'Open Workspace Symbols')
 
           -- Jump to the type of the word under your cursor.
           --  Useful when you're not sure what type a variable is and you want to see
           --  the definition of its *type*, not where it was *defined*.
-          -- map('grt', require('telescope.builtin').lsp_type_definitions, '[G]oto [T]ype Definition')
           map('grt', vim.lsp.buf.type_definition, '[G]oto [T]ype Definition')
 
           -- Signature help
@@ -260,14 +250,6 @@ return {
       --    :Mason
       --
       -- You can press `g?` for help in this menu.
-      -- local ensure_installed = vim.tbl_keys(servers or {})
-      -- vim.list_extend(ensure_installed, {
-      --   -- You can add other tools here that you want Mason to install
-      --   "stylua", -- Used to format Lua code
-      --   "lua_ls",
-      -- })
-
-      -- require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
       for name, server in pairs(opts.servers) do
         vim.lsp.config(name, server)
@@ -275,20 +257,7 @@ return {
       end
     end,
   },
-  -- {
-  --   "WhoIsSethDaniel/mason-tool-installer.nvim",
-  --   opts = {
-  --     ensure_installed = {
-  --     -- You can add other tools here that you want Mason to install
-  --     "stylua", -- Used to format Lua code
-  --     "shfmt",
-  --     'lua_ls',
-  --     }
-  --   },
-  --   config = function(_, opts)
-  --       require("mason-tool-installer").setup(opts)
-  --   end,
-  -- },
+
   -- cmdline tools and lsp servers
   {
 

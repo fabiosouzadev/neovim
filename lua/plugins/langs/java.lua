@@ -107,8 +107,6 @@ local function make_cmd()
 
     '-javaagent:' .. lombok,
 
-    -- "-Xms1g",
-    -- "-Xmx4g",
 
     '-Xmx1g',
 
@@ -270,18 +268,15 @@ return {
               runtimes = {
                 {
                   name = 'JavaSE-11',
-                  path = vim.fn.expand '~/.local/share/mise/installs/java/temurin-11', -- example path
-                  -- path = home .. "/.local/share/mise/installs/java/temurin-21"
+                  path = vim.env.JAVA_HOME_11 or vim.fn.expand('~/.local/share/mise/installs/java/temurin-11'),
                 },
                 {
                   name = 'JavaSE-21',
-                  path = vim.fn.expand '~/.local/share/mise/installs/java/21', -- example path
-                  -- path = home .. "/.local/share/mise/installs/java/temurin-21"
+                  path = vim.env.JAVA_HOME_21 or vim.fn.expand('~/.local/share/mise/installs/java/21'),
                 },
                 {
                   name = 'JavaSE-26',
-                  path = vim.fn.expand '~/.local/share/mise/installs/java/latest', -- example path
-                  -- path = home .. "/.local/share/mise/installs/java/temurin-21"
+                  path = vim.env.JAVA_HOME_26 or vim.fn.expand('~/.local/share/mise/installs/java/latest'),
                 },
               },
             },
@@ -291,7 +286,7 @@ return {
     end,
     config = function(_, opts)
       local function attach_jdtls()
-        vim.notify('lsp server (jdtls) attached - attach_jdtls', "error")
+        vim.notify('lsp server (jdtls) attached - attach_jdtls', vim.log.levels.INFO)
         local fname = vim.api.nvim_buf_get_name(0)
 
         -- Configuration can be augmented and overridden by opts.jdtls
@@ -303,7 +298,7 @@ return {
           },
           settings = opts.settings,
           -- enable CMP capabilities
-          -- capabilities = require('blink.cmp').get_lsp_capabilities() or nil,
+          capabilities = require('blink.cmp').get_lsp_capabilities() or nil,
         }, opts.jdtls)
 
         -- Existing server will be reused if the root_dir matches.
@@ -365,7 +360,7 @@ return {
             local mason_registry = require 'mason-registry'
             if mason_registry.is_installed 'java-debug-adapter' then
               -- custom init for Java debugger
-              -- vim.list_extend(opts.dap, { hotcodereplace = 'auto' })
+
               require('jdtls').setup_dap(opts.dap)
               require('jdtls.dap').setup_dap_main_class_configs()
               if opts.dap_main then require('jdtls.dap').setup_dap_main_class_configs(opts.dap_main) end
