@@ -1,31 +1,112 @@
-# neovim
+# 🚀 fabiosouzadev/neovim
 
-### FAQ
+> **Brutal productivity in software projects.**
 
-* What should I do if I already have a pre-existing Neovim configuration?
-  * You should back it up and then delete all associated files.
-  * This includes your existing init.lua and the Neovim files in `~/.local`
-    which can be deleted with `rm -rf ~/.local/share/nvim/`
-* Can I keep my existing configuration in parallel to kickstart?
-  * Yes! You can use [NVIM_APPNAME](https://neovim.io/doc/user/starting.html#%24NVIM_APPNAME)`=nvim-NAME`
-    to maintain multiple configurations. For example, you can install the kickstart
-    configuration in `~/.config/nvim-kickstart` and create an alias:
-    ```
-    alias nvim-kickstart='NVIM_APPNAME="nvim-kickstart" nvim'
-    ```
-    When you run Neovim using `nvim-kickstart` alias it will use the alternative
-    config directory and the matching local directory
-    `~/.local/share/nvim-kickstart`. You can apply this approach to any Neovim
-    distribution that you would like to try out.
-* what if i want to "uninstall" this configuration:
-  * see [lazy.nvim uninstall](https://lazy.folke.io/usage#-uninstalling) information
-* why is the kickstart `init.lua` a single file? wouldn't it make sense to split it into multiple files?
-  * The main purpose of kickstart is to serve as a teaching tool and a reference
-    configuration that someone can easily use to `git clone` as a basis for their own.
-    As you progress in learning Neovim and Lua, you might consider splitting `init.lua`
-    into smaller parts. A fork of kickstart that does this while maintaining the
-    same functionality is available here:
-    * [kickstart-modular.nvim](https://github.com/dam9000/kickstart-modular.nvim)
-  * Discussions on this topic can be found here:
-    * [Restructure the configuration](https://github.com/nvim-lua/kickstart.nvim/issues/218)
-    * [Reorganize init.lua into a multi-file setup](https://github.com/nvim-lua/kickstart.nvim/pull/473)
+A professional-grade, modular, and high-performance Neovim configuration built for modern development. Specifically optimized for **Java**, **TypeScript/JavaScript**, **Python**, and **PHP**.
+
+[Português (Brasil)](README.pt-br.md)
+
+---
+
+## ✨ Features
+
+- **🧩 Modular Architecture:** Organized plugin system with one-file-per-plugin pattern.
+- **⚡ Performance Optimized:** Lazy-loaded core components to ensure near-instant startup.
+- **🎨 Premium UI:** Powered by `Snacks.nvim`, `Noice`, `Flash`, and a curated selection of colorschemes.
+- **🛠️ Integrated LSP:** Full language server support with automatic tool installation via `Mason`.
+- **🐞 Professional Debugging:** Centralized DAP framework with virtual text and language-specific adapters.
+- **📦 Version Management:** Dynamic runtime resolution via `mise` for all supported languages.
+
+---
+
+## ⌨️ Keymaps Reference
+
+### 🎯 General
+| Key | Action | Description |
+|-----|--------|-------------|
+| `<leader>e` | Explorer | Toggle file explorer (Snacks) |
+| `<leader><space>` | Smart Find | Smart find files (Snacks) |
+| `<leader>ff` | Find Files | Search for files by name |
+| `<leader>fg` | Live Grep | Search for text in workspace |
+| `<C-s>` | Save | Save current buffer |
+| `<leader>l` | Lazy | Open Lazy plugin manager |
+
+### 🔍 Search & Navigation
+| Key | Action | Description |
+|-----|--------|-------------|
+| `gd` | Definition | Go to definition (Snacks) |
+| `gr` | References | List all references (Snacks) |
+| `gy` | Type Def | Go to type definition |
+| `K` | Hover | Show documentation under cursor |
+| `<leader>sb` | Buffer Lines | Search lines in current buffer |
+| `<leader>sw` | Grep Word | Search for word under cursor |
+
+### 🛠️ LSP & Quality
+| Key | Action | Description |
+|-----|--------|-------------|
+| `grn` | Rename | Rename symbol under cursor |
+| `gra` | Code Action | Show available code actions |
+| `<leader>cf` | Format | Format current buffer (Conform) |
+| `[d` / `]d` | Prev/Next | Navigate diagnostics |
+
+### 🐞 Debugging (DAP)
+| Key | Action | Description |
+|-----|--------|-------------|
+| `<F5>` | Continue | Start or continue execution |
+| `<F1>` | Step Into | Step into function |
+| `<F2>` | Step Over | Step over line |
+| `<leader>b` | Breakpoint | Toggle breakpoint |
+| `<F7>` | UI Toggle | Toggle DAP UI |
+
+---
+
+## 🌐 Language Support Matrix
+
+| Language | LSP | Formatter | Linter | Debugger |
+|----------|-----|-----------|--------|----------|
+| **Java** | JDTLS | google-java-format | Checkstyle | java-debug |
+| **TS/JS** | vtsls | Prettier | ESLint | js-debug |
+| **Python** | basedpyright | Ruff | Ruff | debugpy |
+| **PHP** | phpactor | php-cs-fixer | PHPStan | Xdebug |
+
+---
+
+## 🏗️ Architecture
+
+The configuration follows a modular layout for maximum maintainability:
+
+```
+.
+├── init.lua              # Entry point
+└── lua/
+    ├── config/           # Core configuration
+    │   ├── autocmds.lua
+    │   ├── keymaps.lua
+    │   └── options.lua
+    └── plugins/          # Plugin specifications
+        ├── coding/       # Autocomplete, Snippets, Format
+        ├── dap/          # Debugging framework
+        ├── editor/       # Navigation, Git, Treesitter
+        ├── langs/        # Language-specific setups
+        ├── lsp/          # Core LSP configuration
+        └── ui/           # Theme, Statusline, Dashboard
+```
+
+---
+
+## 🚀 Installation
+
+1. **Requirements:**
+   - Neovim >= 0.10.0
+   - `mise` (for runtime management)
+   - `git`, `ripgrep`, `fd`, `fzf`
+2. **Setup:**
+   ```bash
+   git clone https://github.com/fabiosouzadev/neovim.git ~/.config/nvim
+   nvim
+   ```
+
+---
+
+> [!TIP]
+> Use `<leader>sk` to search through all available keymaps interactively!
