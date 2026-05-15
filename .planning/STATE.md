@@ -37,7 +37,7 @@ See: .planning/PROJECT.md (updated 2026-05-15)
 | 2 | Plugin Reorganization | Executed |
 | 3 | Performance Optimization | Executed |
 | 4 | Java & DAP Enhancements | Executed |
-| 5 | Multi-Language Support | Planned |
+| 5 | Multi-Language Support | Executed |
 | 6 | Documentation | Not Started |
 
 ## Decisions Log
