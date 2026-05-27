@@ -18,27 +18,27 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-15)
 
 **Core value:** Produtividade brutal em projetos de software
-**Current focus:** Phase 1 — Bug Fixes & Code Cleanup
+**Current focus:** Milestone v1.0 complete — ready for next milestone
 
 ## Current Phase
 
 | Field | Value |
 |-------|-------|
-| Phase | 1 |
-| Name | Bug Fixes & Code Cleanup |
-| Status | Completed |
-| Requirements | BUGS-01..05, CLEAN-01..07 |
+| Phase | — |
+| Name | All phases completed and archived |
+| Status | Milestone v1.0 Done |
+| Requirements | — |
 
 ## Progress
 
-| Phase | Name | Status |
-|-------|------|--------|
-| 1 | Bug Fixes & Code Cleanup | Completed |
-| 2 | Plugin Reorganization | Executed |
-| 3 | Performance Optimization | Executed |
-| 4 | Java & DAP Enhancements | Executed |
-| 5 | Multi-Language Support | Executed |
-| 6 | Documentation | Completed |
+| Phase | Name | Status | Archive |
+|-------|------|--------|---------|
+| 1 | Bug Fixes & Code Cleanup | Completed | v1.0-phases/ |
+| 2 | Plugin Reorganization | Completed | v1.0-phases/ |
+| 3 | Performance Optimization | Completed | v1.0-phases/ |
+| 4 | Java & DAP Enhancements | Completed | v1.0-phases/ |
+| 5 | Multi-Language Support | Completed | v1.0-phases/ |
+| 6 | Documentation | Completed | v1.0-phases/ |
 
 ## Decisions Log
 
@@ -49,7 +49,8 @@ See: .planning/PROJECT.md (updated 2026-05-15)
 | 2026-05-15 | basedpyright over pyright | Community fork with extra features, research recommendation |
 | 2026-05-15 | Ruff for Python formatting+linting | Replaces 5+ tools, 10-100x faster |
 | 2026-05-15 | Prettier+ESLint over Biome | Broader ecosystem compatibility, Biome deferred to v2 |
+| 2026-05-23 | Archive all v1.0 phases | Milestone complete — 6 phase dirs moved to .planning/milestones/v1.0-phases/ |
 
 ---
 *State initialized: 2026-05-15*
-*Last updated: 2026-05-15*
+*Last updated: 2026-05-23*
